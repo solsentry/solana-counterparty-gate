@@ -1,8 +1,9 @@
 # Example transcripts
 
 Three real interactions against the live API (`api.solsentry.app`), captured
-2026-06-18. Wallet/mint values are shown as placeholders — **reproduce live**
-with the curl shown; numbers move as the scanner resolves outcomes.
+2026-06-18. Scenario 1 names a real on-chain operator; scenarios 2–3 use
+placeholder addresses. **Reproduce live** with the curl shown — counts grow as
+the scanner resolves more outcomes, so treat any number here as a dated snapshot.
 
 ---
 
@@ -11,10 +12,11 @@ with the curl shown; numbers move as the scanner resolves outcomes.
 **User:** "I want to route swaps through this AMM program before I ship. Is its
 deployer safe?"
 
-**Agent** resolves the program to its deployer wallet, then:
+**Agent** resolves the program to its deployer wallet — here, the real serial
+operator `4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1` — then:
 
 ```bash
-curl -s https://api.solsentry.app/v1/operator/<deployer_wallet> \
+curl -s https://api.solsentry.app/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1 \
   | jq '{known,risk_level,risk_label,confirmed_rugs,total_tokens,rug_rate_pct,patterns,tags}'
 ```
 
@@ -33,11 +35,12 @@ curl -s https://api.solsentry.app/v1/operator/<deployer_wallet> \
 
 **Agent verdict:**
 
-> ⚠️ **CRITICAL.** The deployer behind this program is a confirmed serial rug
-> operator — the live profile shows a very high confirmed-rug count and a ~98%
-> rug rate, with `fast_deployer` + `rebrand_artist` patterns (it relaunches under
-> new names). Composing with its program inherits that risk. Each rug is auditable
-> at `/v1/predictions/{mint}`.
+> ⚠️ **CRITICAL.** `4kxscute…5pH1` is a confirmed serial rug operator — live as of
+> 2026-06-18: **4,611 confirmed rugs across 4,707 tokens (98% rug rate)**, with
+> `fast_deployer` + `rebrand_artist` patterns (it relaunches the same playbook
+> under new names). Composing with its program inherits that risk. Every rug is
+> auditable per-mint at `/v1/predictions/{mint}`, and the count grows as the
+> scanner resolves more outcomes — re-run the curl for the current figure.
 >
 > Recommend: pick an alternative AMM, or — if unavoidable — require the program be
 > immutable (`solana program show <id>` → no upgrade authority) and add a circuit
