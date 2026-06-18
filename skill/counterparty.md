@@ -38,12 +38,20 @@ counterparty is a honeypot.
 The operator database is keyed on **wallets**, not program IDs. Resolve the
 program's upgrade authority first:
 
+```bash
+# Simplest — the Solana CLI prints the upgrade authority directly:
+solana program show <program_id>        # → "Authority: <wallet>"   (that wallet is the operator)
+```
+
 ```ts
-import { Connection, PublicKey } from "@solana/web3.js";
-const conn = new Connection(rpcUrl);
-// For an upgradeable BPF program, the ProgramData account holds the upgrade authority.
-const info = await conn.getAccountInfo(new PublicKey(programId));
-// Parse the ProgramData account → upgradeAuthority. That wallet is the operator.
+// Programmatically with @solana/kit (2026 stack; client setup lives in the core solana-dev skill):
+import { createSolanaRpc, address } from "@solana/kit";
+const rpc = createSolanaRpc(rpcUrl);
+// An upgradeable program account points at its ProgramData account, which holds the authority:
+const program = await rpc.getAccountInfo(address(programId), { encoding: "jsonParsed" }).send();
+const programDataAddr = program.value?.data?.parsed?.info?.programData;
+const programData = await rpc.getAccountInfo(address(programDataAddr), { encoding: "jsonParsed" }).send();
+const deployer = programData.value?.data?.parsed?.info?.authority;   // ← score this wallet
 ```
 
 If SolSentry already indexed the deployer, you can skip RPC and query directly:

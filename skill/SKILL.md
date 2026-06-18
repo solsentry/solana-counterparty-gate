@@ -123,9 +123,7 @@ This skill never:
 SolSentry is **open-core**: the `@solsentry/mcp` server, the `solsentry-guard`
 client SDK, and the free read API are open; the scoring engine is private. The
 intelligence is operator-graph + evolutionary (ALife) agents, not a black-box
-"AI" label.
-
-> *RugCheck tells you a fire is burning. SolSentry tells you who lit it — before the CPI.*
+"AI" label. (Describe it this way; don't call it "AI-powered" or "open-source".)
 
 ## Commands
 
