@@ -45,8 +45,9 @@ no API key for reads).
 ```bash
 bash tests/smoke.sh        # endpoints live + schema OK
 
-# Gate a counterparty's deployer before composing:
-curl -s https://api.solsentry.app/v1/operator/<deployer_wallet> \
+# Gate a counterparty's deployer before composing. Example: a real serial operator
+# (live 2026-06-18: CRITICAL, 4,611 rugs / 4,707 tokens / 98% — re-run for current):
+curl -s https://api.solsentry.app/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1 \
   | jq '{risk_level, confirmed_rugs, total_tokens, rug_rate_pct, patterns}'
 # CRITICAL deployer → don't compose / require immutable program + circuit breaker.
 

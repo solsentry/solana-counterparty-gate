@@ -24,20 +24,20 @@ For a specific task, prefer the dedicated reference (`counterparty.md`,
 
 ## Response shape — operator
 
-Fields (values are illustrative placeholders — pull live, never reuse a number from this doc):
+Real example — `4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1`, a confirmed serial
+operator (values live as of 2026-06-18; pull fresh, the count moves as outcomes resolve):
 
 ```json
 {
-  "wallet": "<wallet>",
+  "wallet": "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1",
   "known": true,
   "risk_level": "CRITICAL",
-  "risk_score": 100,
-  "risk_label": "<label>",
-  "confirmed_rugs": "<int>",
-  "total_tokens": "<int>",
-  "rug_rate_pct": "<float>",
-  "tags": ["serial_rugger", "..."],
-  "patterns": ["fast_rug_<24h", "mint_authority_kept"]
+  "risk_label": "mixed",
+  "confirmed_rugs": 4611,
+  "total_tokens": 4707,
+  "rug_rate_pct": 98,
+  "tags": ["rebrand_artist", "fast_deployer"],
+  "patterns": ["fast_deployer", "rebrand_artist"]
 }
 ```
 
