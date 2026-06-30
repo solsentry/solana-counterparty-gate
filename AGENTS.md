@@ -19,6 +19,12 @@ This is the missing axis next to bytecode audits (Trail of Bits, QEDGen,
 safe-solana-builder): **operator-level counterparty risk**, backed by SolSentry's
 live mainnet scanner.
 
+**Methodology vs. live data.** Other skills that name "deployer reputation" treat
+it as a manual methodology — trace a few hops by hand, per query, no index. This
+one is backed by a scanner that has already resolved the history: a lookup returns
+a dated, **per-mint-auditable** verdict in milliseconds. *Evidence from a live
+system, not a methodology document.* Worked proof: `skill/calibration.md`.
+
 ## When to activate (file-pattern triggers)
 
 Load this guidance when the working file shows a counterparty the user did not author:
@@ -41,9 +47,12 @@ Run the server: `npx @solsentry/mcp`. Tools:
 |---|---|
 | `check_operator(wallet)` | Risk profile of a wallet as a token/program **deployer** |
 | `check_token(mint)` | Risk profile of a token mint |
-| `get_top_operators(limit)` | Leaderboard of worst serial rug operators |
-| `get_network_stats()` | System-wide live stats |
+| `get_operator_timeline(wallet)` | Cross-launch deploy history behind a verdict (`operator-history.md`) |
+| `get_network_stats()` | System-wide live stats (`/v1/stats`) |
 | `explain_risk(address)` | Plain-English risk summary for any address |
+
+> The worst-operator **leaderboard** (`/v1/top-operators`) is intentionally **not
+> public** — look operators up **by address**, the supported path.
 
 ### B. Plain REST (any agent that can `curl` / `fetch`)
 
@@ -66,7 +75,9 @@ Full per-workflow detail lives in the `skill/` references — load only what's r
 `counterparty.md` (★ pre-CPI gate), `tx-preview.md` (pre-sign), `threat-intel.md`
 (generic lookup), `audit-handoff.md` (★ after a bytecode audit passes),
 `forensics.md` (drain trace), `cluster-graph.md` (operator network),
-`br-scams.md` (Brazil context), `interpreting-scores.md` (read tiers honestly).
+`br-scams.md` (Brazil context), `interpreting-scores.md` (read tiers honestly),
+`calibration.md` (★ worked dated proof — live data vs methodology),
+`operator-history.md` (cross-launch deploy timeline behind a verdict).
 
 ## Risk vocabulary (act on these)
 
@@ -91,6 +102,16 @@ Full per-workflow detail lives in the `skill/` references — load only what's r
   avoid unqualified "real-time".
 - Operator counts are **volatile** (resolve as outcomes settle). Read them live;
   never bake a count into a doc as if it were fixed.
+
+## Supply-chain safety (this skill is safe to install)
+
+- **read-only** — every operation is a read; never writes, signs, or sends a tx
+- **keyless boot** — read endpoints need no API key/signup/secret; nothing to leak
+- **zero writes** to your machine or chain; no wallet access requested
+- **no telemetry** — talks only to the public `api.solsentry.app` read API, only
+  for the lookup you ask for
+- **MIT, minimal deps** — Markdown + curl; the optional MCP server is one package
+  (`@solsentry/mcp`)
 
 ---
 

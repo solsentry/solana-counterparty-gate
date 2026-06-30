@@ -58,6 +58,16 @@ deployer's on-chain track record across other tokens.
 This skill is the missing axis: **operator-level counterparty risk**. It is
 designed to run *after* a code audit passes — see `audit-handoff.md`.
 
+### Methodology vs. live data (why this isn't a checklist)
+
+Skills that name "deployer reputation" operationalize it as **manual
+methodology**: trace 1–3 hops by hand, per query, with no index behind it. They
+tell you *what to ask*. This skill **answers** it — backed by a scanner running
+continuously on mainnet that has already resolved the history, so a lookup
+returns a dated, per-mint-auditable verdict in milliseconds (the API returns
+`latency_ms`). A worked, reproducible side-by-side lives in `calibration.md`.
+**The differentiator is not a better checklist — it's a live system instead of one.**
+
 ## File-pattern triggers (load this skill when the working file contains)
 
 When editing Solana code, load this skill if you see a counterparty you did not author:
@@ -82,6 +92,8 @@ When editing Solana code, load this skill if you see a counterparty you did not 
 | `cluster-graph.md` | Researching the operator/bot network around a wallet, mint, or scam pattern |
 | `br-scams.md` | Brazil-context scam patterns (KOL/Telegram pumps, vanity-address poisoning) |
 | `interpreting-scores.md` | How to read tiers honestly — what each level means, what `UNKNOWN` does *not* mean, how not to over-interpret |
+| `calibration.md` | ★ Worked, dated, reproducible verdicts on real addresses — the live-data-vs-methodology proof, per-tier precision, FP transparency |
+| `operator-history.md` | The cross-launch deploy timeline behind a verdict (`/v1/operator/{wallet}/timeline`) — cadence, span, per-launch outcomes |
 
 ## Tools (MCP — from `@solsentry/mcp`)
 
@@ -93,9 +105,13 @@ plain REST (see `quickstart.md`) for agents without MCP.
 |---|---|
 | `check_operator(wallet_address)` | Risk profile of a wallet as a token/program deployer |
 | `check_token(mint_address)` | Risk profile of a token mint |
-| `get_top_operators(limit)` | Leaderboard of worst serial rug operators |
-| `get_network_stats()` | System-wide live stats |
+| `get_operator_timeline(wallet)` | Cross-launch deploy history behind a verdict — see `operator-history.md` |
+| `get_network_stats()` | System-wide live stats (`/v1/stats`) |
 | `explain_risk(address)` | Plain-English risk summary for any address |
+
+> The worst-operator **leaderboard** (`get_top_operators` / `/v1/top-operators`)
+> is intentionally **not public** — enumerating the top serial operator is gated
+> by design. Look operators up **by address**; that is the supported path.
 
 ## Risk vocabulary (used across all references)
 
@@ -135,11 +151,28 @@ returns a per-request `latency_ms`; lookups are typically sub-second, suitable
 for an in-loop pre-CPI / pre-sign check as well as for offline research. (This
 is a fast on-demand lookup, not a streaming "real-time" feed.)
 
+## Supply-chain safety (what this skill is allowed to do)
+
+A security skill must itself be safe to install. This one is, by construction:
+
+- **Read-only** — every operation is a `GET` (or read-only `POST` for tx-preview).
+  It never writes, signs, or sends a transaction.
+- **Keyless boot** — read endpoints need no API key, no signup, no secret. Nothing
+  to leak, nothing to phish. (`auth: none` in the frontmatter.)
+- **Zero writes to your machine / chain** — no files created outside the install
+  path, no on-chain state mutated, no wallet access requested.
+- **No telemetry** — the skill phones home to exactly one place, the public
+  `api.solsentry.app` read API, and only for the lookup you asked for. No
+  analytics, no beacons, no background calls.
+- **MIT, minimal deps** — the skill is Markdown + curl; the optional MCP server is
+  a single published package (`@solsentry/mcp`). No transitive install surface
+  baked into the skill itself.
+- **Stateless** — read queries hit a stateless REST API; no user data is stored.
+
 ## Scope guarantees
 
 This skill never:
 
-- Stores user data — read queries hit a stateless REST API
 - Requires authentication for read endpoints
 - Advises on pre-deploy work (codegen, audits, formal proofs) — that is the core
   `solana-dev` skill's job. This skill starts where the audit ends.
