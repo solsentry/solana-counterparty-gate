@@ -1,11 +1,16 @@
 # solana-counterparty-gate
 
-A Claude Code skill for **operator-level counterparty risk** on Solana. Before
-you CPI into, compose with, or integrate a program / oracle / keeper / multisig
-you did not write, check **who operates it** — the question a bytecode audit
-cannot answer.
+A skill for **operator-level counterparty risk** on Solana — for **Claude Code,
+Codex, Cursor, and any coding agent**. Before you CPI into, compose with, or
+integrate a program / oracle / keeper / multisig you did not write, check **who
+operates it** — the question a bytecode audit cannot answer.
 
 > **Clean code ≠ clean partner.** Run the gate *before* the CPI.
+
+> **Any agent:** Claude Code loads [`skill/SKILL.md`](skill/SKILL.md) (progressive,
+> token-efficient). Codex / Cursor / others read [`AGENTS.md`](AGENTS.md). The data
+> layer — the `@solsentry/mcp` MCP server and the keyless REST API — is identical
+> across all of them.
 
 > **Extends**: [solana-dev-skill](https://github.com/solana-foundation/solana-dev-skill) — this skill starts where the audit ends.
 
@@ -45,8 +50,8 @@ no API key for reads).
 ```bash
 bash tests/smoke.sh        # endpoints live + schema OK
 
-# Gate a counterparty's deployer before composing. Example: a real serial operator
-# (live 2026-06-18: CRITICAL, 4,611 rugs / 4,707 tokens / 98% — re-run for current):
+# Gate a counterparty's deployer before composing. Example: a real, confirmed
+# CRITICAL serial rug operator — the count is volatile, so read it live yourself:
 curl -s https://api.solsentry.app/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1 \
   | jq '{risk_level, confirmed_rugs, total_tokens, rug_rate_pct, patterns}'
 # CRITICAL deployer → don't compose / require immutable program + circuit breaker.
@@ -79,6 +84,19 @@ As a submodule inside another kit project:
 ```bash
 git submodule add https://github.com/solsentry/solana-counterparty-gate .claude/skills/ext/solana-counterparty-gate
 ```
+
+### Use with Codex / Cursor / any coding agent
+
+No installer needed — the repo is the skill. Point your agent at
+[`AGENTS.md`](AGENTS.md) (Codex and Cursor read it automatically when the repo is
+in context), or wire the MCP server, which works in every agent:
+
+```bash
+npx @solsentry/mcp        # exposes check_operator / check_token / explain_risk / …
+```
+
+Or just `curl` the keyless REST API (`https://api.solsentry.app`) from any agent —
+see [`skill/quickstart.md`](skill/quickstart.md).
 
 ## Verify
 

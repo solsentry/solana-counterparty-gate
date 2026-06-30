@@ -2,7 +2,33 @@
 name: solana-counterparty-gate
 description: Counterparty & intent gate for Solana — before you CPI into, compose with, or integrate a program/oracle/keeper/multisig you did not write, check who operates it. Answers "is the deployer behind this counterparty a known serial rug operator?" — the question bytecode audits cannot. Backed by SolSentry's live mainnet scanner (api.solsentry.app). Clean code ≠ clean partner.
 user-invocable: true
+license: MIT
+compatibility:
+  - Claude Code
+  - Codex
+  - Cursor
+  - any agent honoring AGENTS.md
+metadata:
+  author: solsentry
+  version: 1.0.0
+  homepage: https://github.com/solsentry/solana-counterparty-gate
+  api_base: https://api.solsentry.app
+  auth: none (keyless for reads)
+  mcp_server: "@solsentry/mcp"
+tags:
+  - security
+  - counterparty
+  - operator-risk
+  - rug
+  - cpi
+  - pre-sign
+  - solana
 ---
+
+> **Any agent:** the cross-agent entry point is [`AGENTS.md`](../AGENTS.md) (read by
+> Codex, Cursor, and any tool honoring `AGENTS.md`). The data layer (MCP + keyless
+> REST) is identical across agents; this file is the Claude Code-native, progressively
+> loaded version.
 
 # Solana Counterparty Gate
 
@@ -103,7 +129,7 @@ reload-after-CPI) is required regardless of tier.
 
 ## Data freshness & latency
 
-The scanner runs continuously on mainnet (1500h+ of cumulative runtime).
+The scanner runs continuously on mainnet (1,800h+ of cumulative runtime).
 Operator profiles update within ~30 seconds of new on-chain activity. The API
 returns a per-request `latency_ms`; lookups are typically sub-second, suitable
 for an in-loop pre-CPI / pre-sign check as well as for offline research. (This

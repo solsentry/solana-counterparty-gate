@@ -25,7 +25,7 @@ For a specific task, prefer the dedicated reference (`counterparty.md`,
 ## Response shape — operator
 
 Real example — `4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1`, a confirmed serial
-operator (values live as of 2026-06-18; pull fresh, the count moves as outcomes resolve):
+operator (values live as of 2026-06-30; pull fresh, the count moves as outcomes resolve):
 
 ```json
 {
@@ -33,10 +33,10 @@ operator (values live as of 2026-06-18; pull fresh, the count moves as outcomes 
   "known": true,
   "risk_level": "CRITICAL",
   "risk_label": "mixed",
-  "confirmed_rugs": 4611,
-  "total_tokens": 4707,
-  "rug_rate_pct": 98,
-  "tags": ["rebrand_artist", "fast_deployer"],
+  "confirmed_rugs": 1468,
+  "total_tokens": 1608,
+  "rug_rate_pct": 91.3,
+  "tags": ["rebuild_2026-05-20", "fast_deployer", "rebrand_artist"],
   "patterns": ["fast_deployer", "rebrand_artist"]
 }
 ```

@@ -1,7 +1,7 @@
 # Example transcripts
 
 Three real interactions against the live API (`api.solsentry.app`), captured
-2026-06-18. Scenario 1 names a real on-chain operator; scenarios 2–3 use
+2026-06-30. Scenario 1 names a real on-chain operator; scenarios 2–3 use
 placeholder addresses. **Reproduce live** with the curl shown — counts grow as
 the scanner resolves more outcomes, so treat any number here as a dated snapshot.
 
@@ -25,18 +25,18 @@ curl -s https://api.solsentry.app/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTi
   "known": true,
   "risk_level": "CRITICAL",
   "risk_label": "mixed",
-  "confirmed_rugs": 4611,
-  "total_tokens": 4707,
-  "rug_rate_pct": 98,
+  "confirmed_rugs": 1468,
+  "total_tokens": 1608,
+  "rug_rate_pct": 91.3,
   "patterns": ["fast_deployer", "rebrand_artist"],
-  "tags": ["rebrand_artist", "rebuild_2026-05-20", "fast_deployer"]
+  "tags": ["rebuild_2026-05-20", "fast_deployer", "rebrand_artist"]
 }
 ```
 
 **Agent verdict:**
 
 > ⚠️ **CRITICAL.** `4kxscute…5pH1` is a confirmed serial rug operator — live as of
-> 2026-06-18: **4,611 confirmed rugs across 4,707 tokens (98% rug rate)**, with
+> 2026-06-30: **1,468 confirmed rugs across 1,608 tokens (91% rug rate)**, with
 > `fast_deployer` + `rebrand_artist` patterns (it relaunches the same playbook
 > under new names). Composing with its program inherits that risk. Every rug is
 > auditable per-mint at `/v1/predictions/{mint}`, and the count grows as the
