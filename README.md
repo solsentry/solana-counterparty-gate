@@ -26,6 +26,13 @@ This skill is the missing axis: **operator-level counterparty risk**, backed by
 SolSentry's live mainnet scanner ([`api.solsentry.app`](https://api.solsentry.app),
 no API key for reads).
 
+**Methodology vs. live data.** Skills that name "deployer reputation" treat it as
+a *manual methodology* — trace a few hops by hand, per query, no index. This one
+is backed by a scanner that has already resolved the history: a lookup returns a
+dated, **per-mint-auditable** verdict in milliseconds, not a checklist to run by
+hand. See [`skill/calibration.md`](skill/calibration.md) for worked, reproducible
+proof. *Evidence from a live system, not a methodology document.*
+
 ## What's included
 
 | File | Purpose |
@@ -40,6 +47,8 @@ no API key for reads).
 | [`skill/cluster-graph.md`](skill/cluster-graph.md) | Operator / bot-cluster network exploration |
 | [`skill/br-scams.md`](skill/br-scams.md) | Brazil-context scam patterns (PT) |
 | [`skill/interpreting-scores.md`](skill/interpreting-scores.md) | How to read tiers honestly — `UNKNOWN` ≠ safe |
+| [`skill/calibration.md`](skill/calibration.md) | ★ Worked, dated, reproducible verdicts on real addresses — live data vs methodology, per-tier precision, FP transparency |
+| [`skill/operator-history.md`](skill/operator-history.md) | Cross-launch deploy timeline behind a verdict — cadence, span, per-launch outcomes |
 | [`commands/`](commands/) | `/check-counterparty`, `/check-token` slash commands |
 | [`agents/counterparty-analyst.md`](agents/counterparty-analyst.md) | Multi-address screening / written report (sonnet) |
 | [`examples/transcripts.md`](examples/transcripts.md) | 3 real interactions captured against the live API |
@@ -114,6 +123,19 @@ from [`/v1/stats`](https://api.solsentry.app/v1/stats). `UNKNOWN` is surfaced as
 SolSentry is **open-core**: the [`@solsentry/mcp`](https://www.npmjs.com/package/@solsentry/mcp)
 server, the `solsentry-guard` SDK, and the free read API are open; the scoring
 engine is private.
+
+## Supply-chain safety
+
+A security skill must itself be safe to install:
+
+- **read-only** — every operation is a read; never writes, signs, or sends a tx
+- **keyless boot** — read endpoints need no API key/signup/secret; nothing to leak
+- **zero writes** to your machine or chain; no wallet access requested
+- **no telemetry** — talks only to the public `api.solsentry.app` read API, only
+  for the lookup you ask for
+- **MIT, minimal deps** — Markdown + curl; the optional MCP server is one package
+  (`@solsentry/mcp`)
+- **stateless** — read queries hit a stateless API; no user data stored
 
 ## License
 

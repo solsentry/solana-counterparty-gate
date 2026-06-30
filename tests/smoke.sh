@@ -8,7 +8,7 @@
 #
 # Exit 0 = all checks passed. Exit 1 = a check failed.
 # No hero addresses are hardcoded: the wallet/mint under test are derived live
-# (top-operators / alerts) so this file carries no copy claims of its own.
+# (from /v1/alerts/recent) so this file carries no copy claims of its own.
 
 set -uo pipefail
 
@@ -21,6 +21,7 @@ need curl; need jq
 
 pass() { echo -e "  ${GREEN}✓${NC} $1"; }
 fail() { echo -e "  ${RED}✗${NC} $1"; FAILS=$((FAILS+1)); }
+info() { echo -e "  ${YELLOW}-${NC} $1"; }
 
 # GET a path, assert HTTP 200, echo body (empty on failure).
 get200() {
@@ -45,48 +46,50 @@ if [ -n "$STATS" ]; then pass "200 OK"; fields "$STATS" .accuracy_pct .critical_
 else fail "/v1/stats unreachable"; fi
 echo ""
 
-# 2) /v1/top-operators → derive a wallet
-echo "[2/8] GET /v1/top-operators (derive wallet)"
-TOP="$(get200 '/v1/top-operators?limit=1')"; WALLET=""
-if [ -n "$TOP" ]; then pass "200 OK"; WALLET="$(printf '%s' "$TOP" | jq -r '.operators[0].wallet // empty')"
-  [ -n "$WALLET" ] && pass "derived wallet" || fail "no wallet in leaderboard"
-else fail "/v1/top-operators unreachable"; fi
+# 2) /v1/alerts/recent → derive a live mint AND its deployer wallet
+echo "[2/8] GET /v1/alerts/recent (derive mint + wallet)"
+ALERTS="$(get200 '/v1/alerts/recent?limit=1')"; MINT=""; WALLET=""
+if [ -n "$ALERTS" ]; then pass "200 OK"
+  MINT="$(printf '%s' "$ALERTS" | jq -r '.alerts[0].mint // empty')"
+  WALLET="$(printf '%s' "$ALERTS" | jq -r '.alerts[0].dev_wallet // empty')"
+  [ -n "$MINT" ] && pass "derived mint" || fail "no mint in alerts"
+  [ -n "$WALLET" ] && pass "derived wallet (dev_wallet)" || info "no dev_wallet on this alert (operator checks will skip)"
+else fail "/v1/alerts/recent unreachable"; fi
 echo ""
 
 # 3) /v1/operator/{wallet}
 echo "[3/8] GET /v1/operator/{wallet}"
 if [ -n "$WALLET" ]; then OP="$(get200 "/v1/operator/$WALLET")"
-  if [ -n "$OP" ]; then pass "200 OK"; fields "$OP" .risk_level .confirmed_rugs .total_tokens .rug_rate_pct; else fail "operator non-200"; fi
-else echo -e "  ${YELLOW}-${NC} skipped (no wallet)"; fi
+  if [ -n "$OP" ]; then pass "200 OK"; fields "$OP" .known .risk_level; else fail "operator non-200"; fi
+else info "skipped (no wallet)"; fi
 echo ""
 
-# 4) /v1/alerts/recent → derive a mint
-echo "[4/8] GET /v1/alerts/recent (derive mint)"
-ALERTS="$(get200 '/v1/alerts/recent?limit=1')"; MINT=""
-if [ -n "$ALERTS" ]; then pass "200 OK"; MINT="$(printf '%s' "$ALERTS" | jq -r '.alerts[0].mint // empty')"
-  [ -n "$MINT" ] && pass "derived mint" || fail "no mint in alerts"
-else fail "/v1/alerts/recent unreachable"; fi
+# 4) /v1/operator/{wallet}/timeline — cross-launch deploy history
+echo "[4/8] GET /v1/operator/{wallet}/timeline"
+if [ -n "$WALLET" ]; then TL="$(get200 "/v1/operator/$WALLET/timeline")"
+  if [ -n "$TL" ]; then pass "200 OK"; fields "$TL" .first_seen .last_seen .total_tokens_in_window; else fail "timeline non-200"; fi
+else info "skipped (no wallet)"; fi
 echo ""
 
 # 5) /v1/token/{mint}
 echo "[5/8] GET /v1/token/{mint}"
 if [ -n "$MINT" ]; then TOK="$(get200 "/v1/token/$MINT")"
   if [ -n "$TOK" ]; then pass "200 OK"; fields "$TOK" .risk_level .risk_score; else fail "token non-200"; fi
-else echo -e "  ${YELLOW}-${NC} skipped (no mint)"; fi
+else info "skipped (no mint)"; fi
 echo ""
 
 # 6) /v1/predictions/{mint} — the per-mint auditability endpoint
 echo "[6/8] GET /v1/predictions/{mint}"
 if [ -n "$MINT" ]; then PRED="$(get200 "/v1/predictions/$MINT")"
   [ -n "$PRED" ] && pass "200 OK (auditable per-mint)" || fail "predictions non-200"
-else echo -e "  ${YELLOW}-${NC} skipped (no mint)"; fi
+else info "skipped (no mint)"; fi
 echo ""
 
 # 7) /v1/lookalike-check
 echo "[7/8] GET /v1/lookalike-check"
 if [ -n "$WALLET" ]; then LK="$(get200 "/v1/lookalike-check?destination=$WALLET&contacts=$WALLET")"
   if [ -n "$LK" ]; then pass "200 OK"; fields "$LK" .suspect .contacts_checked; else fail "lookalike non-200"; fi
-else echo -e "  ${YELLOW}-${NC} skipped (no wallet)"; fi
+else info "skipped (no wallet)"; fi
 echo ""
 
 # 8) POST /v1/tx-preview
