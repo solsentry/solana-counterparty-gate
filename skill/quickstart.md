@@ -18,11 +18,10 @@ at `https://api.solsentry.app`. **No API key is required for read endpoints.**
 }
 ```
 
-Then the five tools are available to the agent:
+Then the four tools are available to the agent:
 
 - `check_operator(wallet_address)` — is this deployer a rug operator?
 - `check_token(mint_address)` — is this mint risky?
-- `get_top_operators(limit)` — worst serial operators
 - `get_network_stats()` — system-wide live stats
 - `explain_risk(address)` — plain-English summary
 
@@ -71,7 +70,6 @@ curl -s https://api.solsentry.app/v1/predictions/<MINT> | jq
 | `GET /v1/operator/{wallet}` | Operator (deployer) risk profile |
 | `GET /v1/token/{mint}` | Token mint risk profile |
 | `GET /v1/predictions/{mint}` | Per-mint prediction + outcome (auditable) |
-| `GET /v1/top-operators?limit=N` | Worst serial operators leaderboard |
 | `GET /v1/lookalike-check?...` | Address-poisoning / vanity lookalike check (see `tx-preview.md`) |
 | `POST /v1/tx-preview` | Pre-sign risk preview of a transaction (see `tx-preview.md`) |
 | `GET /v1/drain-trace/{wallet}` | Post-incident fund-flow trace (see `forensics.md`; x402-paid) |

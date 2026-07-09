@@ -19,7 +19,6 @@ For a specific task, prefer the dedicated reference (`counterparty.md`,
 | `check_operator(wallet)` | Wallet as a deployer | `GET /v1/operator/{wallet}` |
 | `check_token(mint)` | Token mint | `GET /v1/token/{mint}` |
 | `explain_risk(address)` | Plain-English summary | derived |
-| `get_top_operators(limit)` | Worst serial operators | `GET /v1/top-operators?limit=N` |
 | `get_network_stats()` | System-wide live stats | `GET /v1/stats` |
 
 ## Response shape — operator
