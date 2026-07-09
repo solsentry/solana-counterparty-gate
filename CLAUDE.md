@@ -30,8 +30,8 @@ keeper / authority. Also engage right after a bytecode audit passes — see
 ## Data source
 
 SolSentry's live mainnet scanner. Use the `@solsentry/mcp` MCP tools when
-available (`check_operator`, `check_token`, `get_top_operators`,
-`get_network_stats`, `explain_risk`), or the keyless REST API at
+available (`check_operator`, `check_token`, `get_network_stats`,
+`explain_risk`), or the keyless REST API at
 `https://api.solsentry.app` otherwise. No API key for reads.
 
 ## Communication style
