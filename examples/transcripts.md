@@ -1,9 +1,8 @@
 # Example transcripts
 
-Three real interactions against the live API (`api.solsentry.app`), captured
-2026-06-30. Scenario 1 names a real on-chain operator; scenarios 2–3 use
-placeholder addresses. **Reproduce live** with the curl shown — counts grow as
-the scanner resolves more outcomes, so treat any number here as a dated snapshot.
+Three interactions against the live API (`api.solsentry.app`). Addresses are
+placeholders and the JSON values are illustrative. **Reproduce live** with the
+curl shown against the address you are actually checking.
 
 ---
 
@@ -12,11 +11,10 @@ the scanner resolves more outcomes, so treat any number here as a dated snapshot
 **User:** "I want to route swaps through this AMM program before I ship. Is its
 deployer safe?"
 
-**Agent** resolves the program to its deployer wallet — here, the real serial
-operator `4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1` — then:
+**Agent** resolves the program to its deployer wallet (`<DEPLOYER_WALLET>`), then:
 
 ```bash
-curl -s https://api.solsentry.app/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1 \
+curl -s https://api.solsentry.app/v1/operator/<DEPLOYER_WALLET> \
   | jq '{known,risk_level,risk_label,confirmed_rugs,total_tokens,rug_rate_pct,patterns,tags}'
 ```
 
@@ -25,22 +23,22 @@ curl -s https://api.solsentry.app/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTi
   "known": true,
   "risk_level": "CRITICAL",
   "risk_label": "mixed",
-  "confirmed_rugs": 1468,
-  "total_tokens": 1608,
-  "rug_rate_pct": 91.3,
+  "confirmed_rugs": 40,
+  "total_tokens": 50,
+  "rug_rate_pct": 80.0,
   "patterns": ["fast_deployer", "rebrand_artist"],
-  "tags": ["rebuild_2026-05-20", "fast_deployer", "rebrand_artist"]
+  "tags": ["fast_deployer", "rebrand_artist"]
 }
 ```
 
 **Agent verdict:**
 
-> ⚠️ **CRITICAL.** `4kxscute…5pH1` is a confirmed serial rug operator — live as of
-> 2026-06-30: **1,468 confirmed rugs across 1,608 tokens (91% rug rate)**, with
-> `fast_deployer` + `rebrand_artist` patterns (it relaunches the same playbook
-> under new names). Composing with its program inherits that risk. Every rug is
-> auditable per-mint at `/v1/predictions/{mint}`, and the count grows as the
-> scanner resolves more outcomes — re-run the curl for the current figure.
+> ⚠️ **CRITICAL.** This deployer's track record is **40 confirmed rugs across 50
+> tokens (80% rug rate)**, with `fast_deployer` + `rebrand_artist` patterns (it
+> relaunches the same playbook under new names). Composing with its program
+> inherits that risk. Every rug is auditable per-mint at
+> `/v1/predictions/{mint}`, and the count grows as the scanner resolves more
+> outcomes — re-run the curl for the current figure.
 >
 > Recommend: pick an alternative AMM, or — if unavoidable — require the program be
 > immutable (`solana program show <id>` → no upgrade authority) and add a circuit
