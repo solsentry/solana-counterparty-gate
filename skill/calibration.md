@@ -9,47 +9,39 @@ move as outcomes resolve, so reproduce it live before you quote it.
 
 > Snapshot captured **2026-06-30**. Re-run each `curl` to refresh.
 
-## Case 1 — a confirmed serial rug operator → `CRITICAL`
+## Case 1 — a mint flagged `CRITICAL`, then resolved as a confirmed scam
+
+Captured **2026-09-29**.
 
 ```bash
-curl -s https://api.solsentry.app/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1 \
-  | jq '{known,risk_level,risk_score,confirmed_rugs,total_tokens,rug_rate_pct,patterns}'
+curl -s https://api.solsentry.app/v1/token/6n6iS9z5Lz3zMfrGHascQov4ZJu939DRVLUpmAjC55ch \
+  | jq '{known,risk_level,risk_score}'
+curl -s https://api.solsentry.app/v1/predictions/6n6iS9z5Lz3zMfrGHascQov4ZJu939DRVLUpmAjC55ch \
+  | jq '.predictions[] | {predicted_risk,was_correct,final_outcome}'
 ```
 ```json
-{
-  "known": true,
-  "risk_level": "CRITICAL",
-  "risk_score": 96,
-  "confirmed_rugs": 1468,
-  "total_tokens": 1608,
-  "rug_rate_pct": 91.3,
-  "patterns": ["fast_deployer", "rebrand_artist"]
-}
+{ "known": true, "risk_level": "CRITICAL", "risk_score": 100 }
+{ "predicted_risk": 100, "was_correct": true, "final_outcome": "confirmed_scam" }
 ```
-A real operator the gate flags **before** you compose with anything they shipped.
-The signal is the deploy track record across 1,600+ launches — not in the
-bytecode of any single one. This is the question no audit skill answers.
+The call was made before the outcome, and the outcome is recorded per mint, so
+anyone can check it. For a deployer wallet, `GET /v1/operator/{wallet}` returns
+its deploy track record across launches — a signal that is not in the bytecode
+of any single program. This is the question no audit skill answers.
 
 ## Case 2 — precision is **per-tier and published**, not "zero false positives"
 
-The system's own scorecard is a single keyless call. Note the bottom row:
+The system's own scorecard is a single keyless call, read live — never quote a
+tier's precision from memory or from this page:
 
 ```bash
 curl -s https://api.solsentry.app/v1/stats | jq '.precision_by_tier'
 ```
-```json
-{
-  "CRITICAL": { "resolved": 43134, "correct": 42159, "precision_pct": 97.7 },
-  "HIGH":     { "resolved": 7973,  "correct": 7619,  "precision_pct": 95.6 },
-  "MEDIUM":   { "resolved": 21917, "correct": 20821, "precision_pct": 95   },
-  "LOW":      { "resolved": 4179,  "correct": 501,   "precision_pct": 12   }
-}
-```
-The `LOW` tier resolves at **12%** — and we publish it. A system that hid its
-weak tier could claim a prettier blended number; we don't. This is why the gate
-tells you to **act on `CRITICAL`/`HIGH`, never headline `LOW`** (see
-`interpreting-scores.md`). Calibration means knowing exactly which verdicts are
-load-bearing.
+
+Each tier comes back with its own `resolved`, `correct` and `precision_pct`, so
+you can see which verdicts are load-bearing. The gate tells you to **act on
+`CRITICAL`/`HIGH`**; the weakest tier is a single weak signal, not a verdict to
+headline (see `interpreting-scores.md`). Calibration means knowing exactly which
+verdicts carry weight.
 
 ## Case 3 — every verdict is **auditable per-mint** (FPs included)
 
@@ -84,8 +76,7 @@ has nothing against. Standard CPI validation applies regardless (see
 
 - Lead with the **tier and the live count**, both pulled at call time.
 - Point at the audit trail: `auditable per-mint at /v1/predictions/{mint}`.
-- Quote **per-tier** precision (CRITICAL ~97.x% / HIGH ~95.x%) from `/v1/stats`
-  on the day — never one blended number, never "zero false positives".
+- Quote **per-tier** precision (CRITICAL / HIGH) from `/v1/stats` on the day — never one blended number, never "zero false positives".
 - Render `UNKNOWN` as `UNKNOWN`. Never coerce it to "safe".
 
 That is the whole pitch in one line: **a dated, reproducible, per-mint-auditable

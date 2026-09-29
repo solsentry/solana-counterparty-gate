@@ -28,7 +28,7 @@ When you report accuracy, report it **per tier** and point at the audit trail �
 never as one blended number, and never as "zero false positives" (no detector
 is perfect; claiming it invites disproof):
 
-> "CRITICAL precision ~97.x%, HIGH ~95.x% — each verdict auditable per-mint at
+> "CRITICAL precision XX.X%, HIGH XX.X% (live today) — each verdict auditable per-mint at
 > `/v1/predictions/{mint}`."
 
 **Always pull the live figure** from `GET /v1/stats` (`critical_precision_pct`,

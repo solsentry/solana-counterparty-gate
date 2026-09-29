@@ -59,11 +59,16 @@ proof. *Evidence from a live system, not a methodology document.*
 ```bash
 bash tests/smoke.sh        # endpoints live + schema OK
 
-# Gate a counterparty's deployer before composing. Example: a real, confirmed
-# CRITICAL serial rug operator — the count is volatile, so read it live yourself:
-curl -s https://api.solsentry.app/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1 \
+# Gate a counterparty's deployer before composing:
+curl -s https://api.solsentry.app/v1/operator/<DEPLOYER_WALLET> \
   | jq '{risk_level, confirmed_rugs, total_tokens, rug_rate_pct, patterns}'
 # CRITICAL deployer → don't compose / require immutable program + circuit breaker.
+
+# Check a token, then audit the call. Example: a mint scored CRITICAL and later
+# resolved as a confirmed scam:
+curl -s https://api.solsentry.app/v1/token/6n6iS9z5Lz3zMfrGHascQov4ZJu939DRVLUpmAjC55ch | jq '{risk_level, risk_score}'
+curl -s https://api.solsentry.app/v1/predictions/6n6iS9z5Lz3zMfrGHascQov4ZJu939DRVLUpmAjC55ch \
+  | jq '.predictions[] | {predicted_risk, was_correct, final_outcome}'
 
 # Preview a transaction before signing (authority-grab detectors):
 curl -s -X POST https://api.solsentry.app/v1/tx-preview \
