@@ -30,24 +30,18 @@ of any single program. This is the question no audit skill answers.
 
 ## Case 2 — precision is **per-tier and published**, not "zero false positives"
 
-The system's own scorecard is a single keyless call. Note the bottom row:
+The system's own scorecard is a single keyless call, read live — never quote a
+tier's precision from memory or from this page:
 
 ```bash
 curl -s https://api.solsentry.app/v1/stats | jq '.precision_by_tier'
 ```
-```json
-{
-  "CRITICAL": { "resolved": 43134, "correct": 42159, "precision_pct": 97.7 },
-  "HIGH":     { "resolved": 7973,  "correct": 7619,  "precision_pct": 95.6 },
-  "MEDIUM":   { "resolved": 21917, "correct": 20821, "precision_pct": 95   },
-  "LOW":      { "resolved": 4179,  "correct": 501,   "precision_pct": 12   }
-}
-```
-The `LOW` tier resolves at **12%** — and we publish it. A system that hid its
-weak tier could claim a prettier blended number; we don't. This is why the gate
-tells you to **act on `CRITICAL`/`HIGH`, never headline `LOW`** (see
-`interpreting-scores.md`). Calibration means knowing exactly which verdicts are
-load-bearing.
+
+Each tier comes back with its own `resolved`, `correct` and `precision_pct`, so
+you can see which verdicts are load-bearing. The gate tells you to **act on
+`CRITICAL`/`HIGH`**; the weakest tier is a single weak signal, not a verdict to
+headline (see `interpreting-scores.md`). Calibration means knowing exactly which
+verdicts carry weight.
 
 ## Case 3 — every verdict is **auditable per-mint** (FPs included)
 
@@ -82,8 +76,7 @@ has nothing against. Standard CPI validation applies regardless (see
 
 - Lead with the **tier and the live count**, both pulled at call time.
 - Point at the audit trail: `auditable per-mint at /v1/predictions/{mint}`.
-- Quote **per-tier** precision (CRITICAL ~97.x% / HIGH ~95.x%) from `/v1/stats`
-  on the day — never one blended number, never "zero false positives".
+- Quote **per-tier** precision (CRITICAL / HIGH) from `/v1/stats` on the day — never one blended number, never "zero false positives".
 - Render `UNKNOWN` as `UNKNOWN`. Never coerce it to "safe".
 
 That is the whole pitch in one line: **a dated, reproducible, per-mint-auditable
