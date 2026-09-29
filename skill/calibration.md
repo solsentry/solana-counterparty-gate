@@ -9,26 +9,24 @@ move as outcomes resolve, so reproduce it live before you quote it.
 
 > Snapshot captured **2026-06-30**. Re-run each `curl` to refresh.
 
-## Case 1 — a confirmed serial rug operator → `CRITICAL`
+## Case 1 — a mint flagged `CRITICAL`, then resolved as a confirmed scam
+
+Captured **2026-09-29**.
 
 ```bash
-curl -s https://api.solsentry.app/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1 \
-  | jq '{known,risk_level,risk_score,confirmed_rugs,total_tokens,rug_rate_pct,patterns}'
+curl -s https://api.solsentry.app/v1/token/6n6iS9z5Lz3zMfrGHascQov4ZJu939DRVLUpmAjC55ch \
+  | jq '{known,risk_level,risk_score}'
+curl -s https://api.solsentry.app/v1/predictions/6n6iS9z5Lz3zMfrGHascQov4ZJu939DRVLUpmAjC55ch \
+  | jq '.predictions[] | {predicted_risk,was_correct,final_outcome}'
 ```
 ```json
-{
-  "known": true,
-  "risk_level": "CRITICAL",
-  "risk_score": 96,
-  "confirmed_rugs": 1468,
-  "total_tokens": 1608,
-  "rug_rate_pct": 91.3,
-  "patterns": ["fast_deployer", "rebrand_artist"]
-}
+{ "known": true, "risk_level": "CRITICAL", "risk_score": 100 }
+{ "predicted_risk": 100, "was_correct": true, "final_outcome": "confirmed_scam" }
 ```
-A real operator the gate flags **before** you compose with anything they shipped.
-The signal is the deploy track record across 1,600+ launches — not in the
-bytecode of any single one. This is the question no audit skill answers.
+The call was made before the outcome, and the outcome is recorded per mint, so
+anyone can check it. For a deployer wallet, `GET /v1/operator/{wallet}` returns
+its deploy track record across launches — a signal that is not in the bytecode
+of any single program. This is the question no audit skill answers.
 
 ## Case 2 — precision is **per-tier and published**, not "zero false positives"
 

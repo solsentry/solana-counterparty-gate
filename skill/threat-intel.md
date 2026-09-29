@@ -23,19 +23,18 @@ For a specific task, prefer the dedicated reference (`counterparty.md`,
 
 ## Response shape — operator
 
-Real example — `4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1`, a confirmed serial
-operator (values live as of 2026-06-30; pull fresh, the count moves as outcomes resolve):
+Illustrative values (pull live for the wallet you are checking; counts move as outcomes resolve):
 
 ```json
 {
-  "wallet": "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1",
+  "wallet": "<WALLET_ADDRESS>",
   "known": true,
   "risk_level": "CRITICAL",
   "risk_label": "mixed",
-  "confirmed_rugs": 1468,
-  "total_tokens": 1608,
-  "rug_rate_pct": 91.3,
-  "tags": ["rebuild_2026-05-20", "fast_deployer", "rebrand_artist"],
+  "confirmed_rugs": 40,
+  "total_tokens": 50,
+  "rug_rate_pct": 80.0,
+  "tags": ["fast_deployer", "rebrand_artist"],
   "patterns": ["fast_deployer", "rebrand_artist"]
 }
 ```
