@@ -21,6 +21,15 @@ SKILL_PATH="$SKILLS_DIR/$SKILL_NAME"
 CORE_SKILL_PATH="$SKILLS_DIR/$CORE_SKILL_NAME"
 CORE_REPO="https://github.com/solana-foundation/solana-dev-skill.git"
 
+# The core repo moved its skill from skill/ to skills/solana-dev/ — accept both.
+core_src() {
+  local root="$1"
+  for d in "$root/skills/solana-dev" "$root/skill"; do
+    [ -f "$d/SKILL.md" ] && { echo "$d"; return 0; }
+  done
+  return 1
+}
+
 print_help() {
   echo "solana-counterparty-gate — standard installer"
   echo ""
@@ -69,8 +78,8 @@ if [ -d "$CORE_SKILL_PATH" ] && [ -f "$CORE_SKILL_PATH/SKILL.md" ]; then
   echo -e "  ${GREEN}✓${NC} already present, leaving as-is"
 else
   tmp="$(mktemp -d)"
-  if git clone --depth 1 --quiet "$CORE_REPO" "$tmp" 2>/dev/null; then
-    rm -rf "$CORE_SKILL_PATH"; cp -r "$tmp/skill" "$CORE_SKILL_PATH"; rm -rf "$tmp"
+  if git clone --depth 1 --quiet "$CORE_REPO" "$tmp" 2>/dev/null && src="$(core_src "$tmp")"; then
+    rm -rf "$CORE_SKILL_PATH"; cp -r "$src" "$CORE_SKILL_PATH"; rm -rf "$tmp"
     echo -e "  ${GREEN}✓${NC} installed to $CORE_SKILL_PATH"
   else
     rm -rf "$tmp"
