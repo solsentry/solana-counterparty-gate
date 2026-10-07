@@ -42,7 +42,7 @@ echo ""
 # 1) /v1/stats
 echo "[1/8] GET /v1/stats"
 STATS="$(get200 /v1/stats)"
-if [ -n "$STATS" ]; then pass "200 OK"; fields "$STATS" .accuracy_pct .critical_precision_pct .confirmed_rugs .runtime_hours
+if [ -n "$STATS" ]; then pass "200 OK"; fields "$STATS" .total_predictions .resolved .confirmed_rugs .runtime_hours
 else fail "/v1/stats unreachable"; fi
 echo ""
 

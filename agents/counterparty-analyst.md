@@ -46,9 +46,11 @@ End with:
   Cite `/v1/predictions/{mint}` so each verdict is auditable.
 - **`UNKNOWN` ≠ safe** — report it as "not in the tracked operator database".
 - **Never headline a `LOW` tier**; report CRITICAL/HIGH (MEDIUM if needed).
-- **Never claim "zero false positives" or "100% accurate."** Report precision
-  per tier with the auditable endpoint.
-- Say "sub-second lookup" for the API and "6h fast-track / ~2-day primary
-  resolution" for outcomes — avoid unqualified "real-time".
+- **Never claim perfect precision or an error-free record,** and never quote a
+  precision or accuracy percentage. State the track record as "over N
+  outcome-tracked predictions, each auditable per mint" (N live from `/v1/stats`).
+- Say "sub-second lookup" for the API; for outcomes say "6h fast-track" and read
+  the primary resolution time live (`avg_resolve_latency_hours` in `/v1/stats`) —
+  never describe outcomes as instant.
 - This is an **orthogonal** layer to the audit — never present it as replacing
   standard CPI hygiene (account ownership, signer checks, reload-after-CPI).

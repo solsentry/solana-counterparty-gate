@@ -45,8 +45,9 @@ invoke(&ix, &accounts)?;            // target program_id is third-party
 
 ## Never overstate the signal (honesty)
 
-- Report risk **per tier** (CRITICAL / HIGH / MEDIUM), pulled live. **Never**
-  "zero false positives" or "100% accurate".
+- Report risk **per tier** (CRITICAL / HIGH / MEDIUM), pulled live. Never quote a
+  precision or accuracy percentage, and **never** claim perfect precision or an
+  error-free record.
 - `LOW` is a single weak signal — **not load-bearing**. Do not headline it.
 - Operator counts are **volatile**; read them live, never hardcode a count.
 - Cite the per-mint audit trail (`/v1/predictions/{mint}`), never an opaque score.

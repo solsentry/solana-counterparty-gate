@@ -38,7 +38,7 @@ One real call, copy-paste runnable right now:
 
 ```bash
 # System is live? Pull fresh stats (always verify numbers here, never trust a doc)
-curl -s https://api.solsentry.app/v1/stats | jq '{accuracy_pct, critical_precision_pct, confirmed_rugs, runtime_hours}'
+curl -s https://api.solsentry.app/v1/stats | jq '{total_predictions, resolved, confirmed_rugs, runtime_hours}'
 ```
 
 Check a counterparty's deployer wallet:

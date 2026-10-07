@@ -45,8 +45,10 @@ available (`check_operator`, `check_token`, `get_network_stats`,
 
 ## Honesty contract (hard rules)
 
-- Report precision **per tier**, pulled live from `/v1/stats`. **Never** "zero
-  false positives" or "100% accurate".
+- Never quote a precision or accuracy percentage. Use the count form: "over N
+  outcome-tracked predictions, each auditable per mint at `/v1/predictions/{mint}`"
+  (N = live `resolved` from `/v1/stats`). **Never** claim perfect precision or an
+  error-free record.
 - Surface `UNKNOWN` as `UNKNOWN` — no history is **not** proof of safety.
 - The scanner is a fast on-demand lookup, not a streaming feed — avoid unqualified
   "real-time".

@@ -92,7 +92,7 @@ When editing Solana code, load this skill if you see a counterparty you did not 
 | `cluster-graph.md` | Researching the operator/bot network around a wallet, mint, or scam pattern |
 | `br-scams.md` | Brazil-context scam patterns (KOL/Telegram pumps, vanity-address poisoning) |
 | `interpreting-scores.md` | How to read tiers honestly — what each level means, what `UNKNOWN` does *not* mean, how not to over-interpret |
-| `calibration.md` | ★ Worked, dated, reproducible verdicts on real addresses — the live-data-vs-methodology proof, per-tier precision, FP transparency |
+| `calibration.md` | ★ Worked, dated, reproducible verdicts on real addresses — the live-data-vs-methodology proof, outcome audit trail, FP transparency |
 | `operator-history.md` | The cross-launch deploy timeline behind a verdict (`/v1/operator/{wallet}/timeline`) — cadence, span, per-launch outcomes |
 
 ## Tools (MCP — from `@solsentry/mcp`)
@@ -137,15 +137,17 @@ reload-after-CPI) is required regardless of tier.
 
 - Every operator/token verdict is **auditable per-mint** at
   `/v1/predictions/{mint}` — the skill never asks you to trust an opaque score.
-- Precision is reported **per tier** (CRITICAL vs HIGH vs MEDIUM), not as one
-  blended number, and never as "zero false positives".
+- No precision or accuracy percentage is quoted (per tier or blended): the track
+  record is the count of outcome-tracked predictions, each auditable per mint.
+  Never a claim of perfect precision.
 - `UNKNOWN` is surfaced as `UNKNOWN`, not silently coerced to "safe".
 - Live numbers come from `/v1/stats` — `quickstart.md` shows how to pull them
   fresh rather than trusting a number baked into a doc.
 
 ## Data freshness & latency
 
-The scanner runs continuously on mainnet (1,800h+ of cumulative runtime).
+The scanner runs continuously on mainnet (cumulative runtime is live in
+`/v1/stats` as `runtime_hours`).
 Operator profiles update within ~30 seconds of new on-chain activity. The API
 returns a per-request `latency_ms`; lookups are typically sub-second, suitable
 for an in-loop pre-CPI / pre-sign check as well as for offline research. (This

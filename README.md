@@ -47,7 +47,7 @@ proof. *Evidence from a live system, not a methodology document.*
 | [`skill/cluster-graph.md`](skill/cluster-graph.md) | Operator / bot-cluster network exploration |
 | [`skill/br-scams.md`](skill/br-scams.md) | Brazil-context scam patterns (PT) |
 | [`skill/interpreting-scores.md`](skill/interpreting-scores.md) | How to read tiers honestly — `UNKNOWN` ≠ safe |
-| [`skill/calibration.md`](skill/calibration.md) | ★ Worked, dated, reproducible verdicts on real addresses — live data vs methodology, per-tier precision, FP transparency |
+| [`skill/calibration.md`](skill/calibration.md) | ★ Worked, dated, reproducible verdicts on real addresses — live data vs methodology, outcome audit trail, FP transparency |
 | [`skill/operator-history.md`](skill/operator-history.md) | Cross-launch deploy timeline behind a verdict — cadence, span, per-launch outcomes |
 | [`commands/`](commands/) | `/check-counterparty`, `/check-token` slash commands |
 | [`agents/counterparty-analyst.md`](agents/counterparty-analyst.md) | Multi-address screening / written report (sonnet) |
@@ -121,8 +121,9 @@ bash tests/smoke.sh
 ## Honesty contract
 
 Every verdict is **auditable per-mint** at `/v1/predictions/{mint}` — no opaque
-score. Precision is reported per tier (CRITICAL / HIGH / MEDIUM), pulled live
-from [`/v1/stats`](https://api.solsentry.app/v1/stats). `UNKNOWN` is surfaced as
+score. The track record is stated as a count of outcome-tracked predictions, read
+live from [`/v1/stats`](https://api.solsentry.app/v1/stats), never as a bare
+precision percentage. `UNKNOWN` is surfaced as
 `UNKNOWN`, never silently coerced to "safe".
 
 SolSentry is **open-core**: the [`@solsentry/mcp`](https://www.npmjs.com/package/@solsentry/mcp)

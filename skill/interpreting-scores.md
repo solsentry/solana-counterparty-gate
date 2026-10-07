@@ -22,18 +22,20 @@ barely-flagged tokens, most of which never rug), so quoting it either misleads
 or invites a fair rebuttal. Fold `LOW` into "treat as cautious-`UNKNOWN`" and
 move on. Cite `CRITICAL` / `HIGH` (and `MEDIUM` when needed) — never `LOW`.
 
-## Precision is per-tier, and it is not perfection
+## How to state the track record (no percentages)
 
-When you report accuracy, report it **per tier** and point at the audit trail —
-never as one blended number, and never as "zero false positives" (no detector
-is perfect; claiming it invites disproof):
+Do not quote a precision or accuracy percentage — not per tier, not blended.
+Most new Solana launches die regardless of any flag, so a bare hit rate without
+the base rate of the same universe and window overstates what the signal adds.
+And never claim perfect precision or an error-free record (no detector is
+perfect; claiming it invites disproof). State the track record as a count and point at the audit
+trail:
 
-> "CRITICAL precision XX.X%, HIGH XX.X% (live today) — each verdict auditable per-mint at
+> "Over N outcome-tracked predictions, each auditable per mint at
 > `/v1/predictions/{mint}`."
 
-**Always pull the live figure** from `GET /v1/stats` (`critical_precision_pct`,
-`precision_by_tier`) on the day you cite it. Numbers move as outcomes resolve;
-a number copied from a doc is already stale.
+Read N live from `GET /v1/stats` (`resolved`) on the day you cite it. Numbers
+move as outcomes resolve; a number copied from a doc is already stale.
 
 ## `UNKNOWN` ≠ safe (the most common misread)
 
@@ -69,13 +71,14 @@ label the API didn't give you.
 A flagged token is watched before its outcome resolves:
 
 - Fast-track ~6h (risk ≥ 80, or mint+freeze kept, or top holder ≥ 70%)
-- Primary resolution ~2 days otherwise
+- Primary resolution otherwise — read the live average from `/v1/stats`
+  (`avg_resolve_latency_hours`); it moves with the backlog
 - Volume-dead (<$100 24h volume) resolves immediately
 
 So: the **scan/lookup** is fast (sub-second; the API returns `latency_ms`), but
-**outcome confirmation** takes hours to days. Say "sub-50ms scan response" or
-"fast on-demand lookup" for the API; say "6h fast-track / ~2-day primary
-resolution" for outcomes. Avoid unqualified "real-time."
+**outcome confirmation** takes hours to days. Say "sub-second response" or
+"fast on-demand lookup" for the API; say "6h fast-track" plus the live
+`avg_resolve_latency_hours` for outcomes. Never describe outcomes as instant.
 
 ## Why the rubric is public
 

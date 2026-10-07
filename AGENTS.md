@@ -93,9 +93,12 @@ Full per-workflow detail lives in the `skill/` references — load only what's r
 
 ## Honesty rules (non-negotiable — this is a quality feature)
 
-- Report precision **per tier** (CRITICAL / HIGH / MEDIUM), pulled live from
-  `/v1/stats`. Never a blended number. **Never claim "zero false positives"** or
-  "100% accurate" — no detector is perfect.
+- **Never quote a precision or accuracy percentage** (per tier or blended). Most
+  new Solana launches die anyway, so a bare hit rate without the base rate of the
+  same universe overstates the signal. Use the count form: "over N outcome-tracked
+  predictions, each auditable per mint at `/v1/predictions/{mint}`" (N = live
+  `resolved` from `/v1/stats`). **Never claim perfect precision or an error-free
+  record** — no detector is perfect.
 - Every verdict is **auditable per-mint** at `/v1/predictions/{mint}`. Cite it.
 - Surface `UNKNOWN` as `UNKNOWN` — never silently coerce it to "safe".
 - The scanner is a **fast on-demand lookup**, not a streaming "real-time" feed —
