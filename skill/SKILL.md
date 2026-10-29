@@ -125,9 +125,9 @@ Actionable tiers — these are the levels you act on:
 | `CLEAN` | Tracked, no rug history | No rug signal — standard CPI validation still applies |
 | `UNKNOWN` | Not in the database (never observed deploying) | **Not proof of safety** — no history ≠ trustworthy |
 
-> The API may also return `LOW` for a single weak/isolated signal. Treat `LOW`
-> as **not load-bearing** — do not headline it as a verdict; fold it into
-> `UNKNOWN`-grade caution. See `interpreting-scores.md`.
+> Headline only the levels in this table. Any other level in a response is
+> **not load-bearing** — fold it into `UNKNOWN`-grade caution. See
+> `interpreting-scores.md`.
 
 `UNKNOWN` means no on-chain history as a deployer was found — it is neither a
 green nor a red flag. Standard CPI validation (account ownership, signer checks,
@@ -171,7 +171,7 @@ A security skill must itself be safe to install. This one is, by construction:
   baked into the skill itself.
 - **Stateless** — read queries hit a stateless REST API; no user data is stored.
 
-## Scope guarantees
+## Scope
 
 This skill never:
 

@@ -38,9 +38,9 @@ curl -s https://api.solsentry.app/v1/stats | jq '{total_predictions, resolved, c
 
 State it as "over N outcome-tracked predictions, each auditable per mint" (N =
 `resolved`). Do not turn it into a precision percentage: most new launches die
-anyway, so a bare hit rate without the base rate of the same universe overstates
-the signal. The gate tells you to **act on `CRITICAL`/`HIGH`**; the weakest tier
-is a single weak signal, not a verdict to headline (see `interpreting-scores.md`).
+anyway, so a ratio quoted without the base rate of the same universe overstates
+the signal. The gate tells you to **act on `CRITICAL`/`HIGH`** (see
+`interpreting-scores.md`).
 
 ## Case 3 — every verdict is **auditable per-mint** (FPs included)
 
@@ -56,7 +56,7 @@ A real trail shows the verdict graduating across horizons
 an early flag was later **re-classified as a false positive**. That re-class is
 visible per-mint on purpose: "auditable" includes auditing where we were wrong.
 
-## Case 4 — no data is `UNKNOWN`, not a verdict (no false GO, no false alarm)
+## Case 4 — no data is `UNKNOWN`, not a verdict
 
 ```bash
 curl -s https://api.solsentry.app/v1/operator/<wallet-never-seen-deploying> \
@@ -65,11 +65,9 @@ curl -s https://api.solsentry.app/v1/operator/<wallet-never-seen-deploying> \
 ```json
 { "known": false, "risk_level": "UNKNOWN", "risk_score": null }
 ```
-The gate refuses to fabricate a verdict in either direction. An unobserved
-wallet returns `UNKNOWN` — explicitly "absence is not safety" — so the skill
-never green-lights a partner it has no evidence on, and never red-flags one it
-has nothing against. Standard CPI validation applies regardless (see
-`counterparty.md`).
+An unobserved wallet returns `UNKNOWN` — "absence is not safety" — so read it
+as no evidence either way, not as a green light. Standard CPI validation applies
+regardless (see `counterparty.md`).
 
 ## How to report a verdict (the honest contract, applied)
 

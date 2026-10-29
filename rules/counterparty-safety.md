@@ -48,7 +48,7 @@ invoke(&ix, &accounts)?;            // target program_id is third-party
 - Report risk **per tier** (CRITICAL / HIGH / MEDIUM), pulled live. Never quote a
   precision or accuracy percentage, and **never** claim perfect precision or an
   error-free record.
-- `LOW` is a single weak signal — **not load-bearing**. Do not headline it.
+- Headline only CRITICAL / HIGH / MEDIUM; any other level is **not load-bearing**.
 - Operator counts are **volatile**; read them live, never hardcode a count.
 - Cite the per-mint audit trail (`/v1/predictions/{mint}`), never an opaque score.
 

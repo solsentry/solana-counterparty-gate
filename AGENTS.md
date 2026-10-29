@@ -89,12 +89,12 @@ Full per-workflow detail lives in the `skill/` references — load only what's r
 | `CLEAN` | Tracked, no rug history → standard CPI validation still applies |
 | `UNKNOWN` | Never observed deploying → **not proof of safety**; no history ≠ trustworthy |
 
-`LOW` (a single weak signal) is **not load-bearing** — fold into `UNKNOWN`-grade caution.
+Headline only the levels above; any other level is **not load-bearing** — fold it into `UNKNOWN`-grade caution.
 
 ## Honesty rules (non-negotiable — this is a quality feature)
 
 - **Never quote a precision or accuracy percentage** (per tier or blended). Most
-  new Solana launches die anyway, so a bare hit rate without the base rate of the
+  new Solana launches die anyway, so a ratio quoted without the base rate of the
   same universe overstates the signal. Use the count form: "over N outcome-tracked
   predictions, each auditable per mint at `/v1/predictions/{mint}`" (N = live
   `resolved` from `/v1/stats`). **Never claim perfect precision or an error-free

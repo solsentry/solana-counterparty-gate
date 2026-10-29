@@ -30,5 +30,5 @@ buys, or lists it. Load `skill/threat-intel.md` and `skill/interpreting-scores.m
 ## Rules
 
 - Pull numbers live; cite `/v1/predictions/{mint}` for auditability.
-- Treat `LOW` as not load-bearing; never render `UNKNOWN` as "safe".
+- Headline only CRITICAL / HIGH / MEDIUM; never render `UNKNOWN` as "safe".
 - One-line verdict first, then detail.

@@ -11,21 +11,17 @@ footnote.
 | `CRITICAL` | 10+ confirmed rugs | token confirmed as rug | "do not compose / do not sign" |
 | `HIGH` | 5+ confirmed rugs / score ≥ 80 | score ≥ 80 | "treat as unsafe; prefer an alternative" |
 | `MEDIUM` | 2+ confirmed rugs / score ≥ 50 | score ≥ 50 | "elevated — surface it, proceed with explicit caution" |
-| `CLEAN` | no rugs, has tracked tokens | — | "no rug signal" (not "guaranteed safe") |
+| `CLEAN` | no rugs, has tracked tokens | — | "no rug signal" (not "safe") |
 | `UNKNOWN` | not in database | not yet scanned | "no history found — absence is not safety" |
 
-### `LOW` — why it is not in the table above
-
-The engine can emit `LOW` for a single isolated weak signal. **Do not headline
-`LOW` as a verdict.** Its precision is a denominator artifact (a large pool of
-barely-flagged tokens, most of which never rug), so quoting it either misleads
-or invites a fair rebuttal. Fold `LOW` into "treat as cautious-`UNKNOWN`" and
-move on. Cite `CRITICAL` / `HIGH` (and `MEDIUM` when needed) — never `LOW`.
+Only the levels in this table are verdicts. Cite `CRITICAL` / `HIGH` (and
+`MEDIUM` when needed); if a response carries any other level, do not headline it
+— fold it into "treat as cautious-`UNKNOWN`".
 
 ## How to state the track record (no percentages)
 
 Do not quote a precision or accuracy percentage — not per tier, not blended.
-Most new Solana launches die regardless of any flag, so a bare hit rate without
+Most new Solana launches die regardless of any flag, so a ratio quoted without
 the base rate of the same universe and window overstates what the signal adds.
 And never claim perfect precision or an error-free record (no detector is
 perfect; claiming it invites disproof). State the track record as a count and point at the audit
@@ -52,7 +48,7 @@ reload-after-CPI, holder/LP inspection) applies regardless of tier.
 - **Serial-deployer boost**: +15 if the deployer has ≥2 confirmed rugs, +25 if
   also classified serial. This is the operator-graph signal flowing into the
   token score — the thing bytecode tools can't see.
-- Score floors: `CRITICAL` ≥ 80, `HIGH` ≥ 60, `MEDIUM` ≥ 40. Low-data tokens
+- Score floors: `CRITICAL` ≥ 80, `HIGH` ≥ 60, `MEDIUM` ≥ 40. Tokens with little data
   (<10 holders) carry a soft risk floor so "too new to tell" doesn't read as clean.
 
 ## Operator labels (`risk_label`)

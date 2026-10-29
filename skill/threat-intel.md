@@ -57,8 +57,8 @@ Illustrative values (pull live for the wallet you are checking; counts move as o
 ## Output guidance
 
 - **Lead with the verdict**: `CRITICAL` / `HIGH` / `MEDIUM` / `CLEAN` / `UNKNOWN`.
-  Treat `LOW` as not load-bearing (see `interpreting-scores.md`) — fold it into
-  cautious-`UNKNOWN`, don't headline it.
+  Any other level is not load-bearing (see `interpreting-scores.md`) — fold it
+  into cautious-`UNKNOWN`, don't headline it.
 - Always show `confirmed_rugs` **and** `total_tokens` together — `5/5` and
   `5/500` are very different stories.
 - For `UNKNOWN`, say "not in the tracked operator database" — **never** "safe".
