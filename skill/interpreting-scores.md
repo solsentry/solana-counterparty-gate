@@ -8,9 +8,9 @@ footnote.
 
 | Level | Operator criteria | Token criteria | What you may say |
 |---|---|---|---|
-| `CRITICAL` | 10+ confirmed rugs | token confirmed as rug | "do not compose / do not sign" |
-| `HIGH` | 5+ confirmed rugs / score ≥ 80 | score ≥ 80 | "treat as unsafe; prefer an alternative" |
-| `MEDIUM` | 2+ confirmed rugs / score ≥ 50 | score ≥ 50 | "elevated — surface it, proceed with explicit caution" |
+| `CRITICAL` | 10+ confirmed rugs | score ≥ 80, or token confirmed as rug | "do not compose / do not sign" |
+| `HIGH` | 5+ confirmed rugs | score ≥ 60 | "treat as unsafe; prefer an alternative" |
+| `MEDIUM` | 2+ confirmed rugs | score ≥ 50 | "elevated — surface it, proceed with explicit caution" |
 | `CLEAN` | no rugs, has tracked tokens | — | "no rug signal" (not "safe") |
 | `UNKNOWN` | not in database | not yet scanned | "no history found — absence is not safety" |
 
@@ -48,7 +48,7 @@ reload-after-CPI, holder/LP inspection) applies regardless of tier.
 - **Serial-deployer boost**: +15 if the deployer has ≥2 confirmed rugs, +25 if
   also classified serial. This is the operator-graph signal flowing into the
   token score — the thing bytecode tools can't see.
-- Score floors: `CRITICAL` ≥ 80, `HIGH` ≥ 60, `MEDIUM` ≥ 40. Tokens with little data
+- Score floors: `CRITICAL` ≥ 80, `HIGH` ≥ 60, `MEDIUM` ≥ 50. Tokens with little data
   (<10 holders) carry a soft risk floor so "too new to tell" doesn't read as clean.
 
 ## Operator labels (`risk_label`)
