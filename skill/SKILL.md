@@ -202,6 +202,6 @@ intelligence is operator-graph + evolutionary (ALife) agents, not a black-box
 ## Links
 
 - Homepage: https://solsentry.app
-- API: https://api.solsentry.app
+- API: base `https://api.solsentry.app` (live check: https://api.solsentry.app/v1/stats)
 - NPM: https://www.npmjs.com/package/@solsentry/mcp
 - GitHub: https://github.com/solsentry

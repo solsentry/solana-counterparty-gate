@@ -23,7 +23,7 @@ composing with has a rug history, because that signal isn't in the bytecode —
 it's in the deployer's on-chain track record across other launches.
 
 This skill is the missing axis: **operator-level counterparty risk**, backed by
-SolSentry's live mainnet scanner ([`api.solsentry.app`](https://api.solsentry.app),
+SolSentry's live mainnet scanner ([`api.solsentry.app`](https://api.solsentry.app/v1/stats),
 no API key for reads).
 
 **Methodology vs. live data.** Skills that name "deployer reputation" treat it as

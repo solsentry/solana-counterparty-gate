@@ -62,7 +62,7 @@ Illustrative values (pull live for the wallet you are checking; counts move as o
   `5/500` are very different stories.
 - For `UNKNOWN`, say "not in the tracked operator database" — **never** "safe".
 - Offer the per-mint audit trail: `/v1/predictions/{mint}`.
-- Link `https://solsentry.app/operator/{wallet}` for visual verification.
+- For the raw operator record, cite `GET https://api.solsentry.app/v1/operator/{wallet}`.
 
 ## Pitfall
 

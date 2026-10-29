@@ -52,4 +52,4 @@ padrão `fast_deployer`). O token parece novo; o operador não é.
 
 - Lidere com o veredicto (CRITICAL/HIGH/MEDIUM); trate LOW como não-decisivo.
 - Para `UNKNOWN`: "não está na base de operadores rastreados" — **nunca** "é seguro".
-- Ofereça o link de verificação: `https://solsentry.app/operator/{wallet}`.
+- Para o registro bruto do operador, cite `GET https://api.solsentry.app/v1/operator/{wallet}`.
