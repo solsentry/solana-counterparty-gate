@@ -55,16 +55,12 @@ reload-after-CPI, holder/LP inspection) applies regardless of tier.
 - Score floors: `CRITICAL` ≥ 80, `HIGH` ≥ 60, `MEDIUM` ≥ 40. Low-data tokens
   (<10 holders) carry a soft risk floor so "too new to tell" doesn't read as clean.
 
-## Operator labels (rug rate = confirmed_rugs / total_tokens)
+## Operator labels (`risk_label`)
 
-| Label | Threshold | Read as |
-|---|---|---|
-| `serial_rugger` | ≥ 70% | almost everything they ship rugs |
-| `suspicious` | ≥ 40% | more rugs than legit |
-| `legit` | < 20% (≥3 tokens) | track record favors legit launches |
-
-Operators with <3 tokens are **unlabelled** — sample too small. Don't infer a
-label the API didn't give you.
+Quote `risk_label` exactly as the API returns it, next to `confirmed_rugs` /
+`total_tokens` (`rug_rate_pct` = confirmed_rugs / total_tokens). Do not derive a
+label from `rug_rate_pct` yourself, and don't infer a label the API didn't give
+you. A wallet with one or two tokens is too small a sample to call serial.
 
 ## Outcome timing (so you qualify "real-time" honestly)
 

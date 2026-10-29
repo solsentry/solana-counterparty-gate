@@ -28,7 +28,7 @@ curl -s -X POST https://api.solsentry.app/v1/tx-preview \
   "risk_score": 0,
   "verdict": "safe",
   "findings": [],
-  "detectors_run": ["close_account", "owner_reassignment", "stake_authority"],
+  "detectors_run": ["close_account", "owner_reassignment", "stake_authority", "high_frequency_launcher"],
   "decode_ok": true,
   "latency_ms": 0.0
 }
@@ -36,11 +36,11 @@ curl -s -X POST https://api.solsentry.app/v1/tx-preview \
 
 | Field | Meaning |
 |---|---|
-| `verdict` | `safe` / elevated — lead with this |
+| `verdict` | `safe`, or `warn` when something needs attention — lead with this |
 | `risk_score` | numeric score for the transaction |
 | `findings` | array of triggered detector findings (empty = none) |
 | `detectors_run` | which detectors evaluated this tx (transparency: shows coverage) |
-| `decode_ok` | `false` ⇒ the tx could not be decoded — treat as inconclusive, **not** safe |
+| `decode_ok` | `false` ⇒ the tx could not be decoded (no detector ran; `findings` carries a `decode` entry) — treat as inconclusive, **not** safe |
 
 **Output guidance:** if `findings` is non-empty, name each finding and *do not*
 recommend signing. If `decode_ok` is `false`, tell the user the preview was
@@ -53,8 +53,11 @@ characters mimic an address you actually use, hoping you copy the wrong one.
 This check compares a `destination` against your known `contacts`.
 
 ```bash
-curl -s "https://api.solsentry.app/v1/lookalike-check?destination=<addr>&contacts=<W1>,<W2>,..."
+curl -s "https://api.solsentry.app/v1/lookalike-check?destination=<addr>&contacts=<W1>,<W2>"
 ```
+
+`GET` only. Pass every contact in **one** comma-separated `contacts` value (a
+repeated `contacts=` parameter is not merged).
 
 **Response** (live shape):
 
@@ -73,7 +76,7 @@ curl -s "https://api.solsentry.app/v1/lookalike-check?destination=<addr>&contact
 |---|---|
 | `suspect` | `true` ⇒ `destination` resembles one of the contacts (likely poisoning) |
 | `confidence` | strength of the lookalike match (`none` / higher) |
-| `findings` | which contact(s) it mimics and how (prefix/suffix overlap) |
+| `findings` | which contact(s) it mimics and how: `original_contact`, `prefix_match`, `suffix_match`, `confidence`, `reasons` |
 | `contacts_checked` | how many contacts were compared |
 
 **Output guidance:** when `suspect` is `true`, stop and surface *which* real

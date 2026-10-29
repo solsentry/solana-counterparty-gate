@@ -13,8 +13,8 @@ padrão para o endpoint que ajuda a checá-lo.
 Influencer ou grupo "VIP" anuncia um token novo; compra coordenada no mesmo
 bloco; deployer dropa a liquidez minutos depois.
 
-- **Como checar:** `check_token(mint)` → olhar `deployer` e `deployer_risk_level`.
-  Em seguida `check_operator(deployer)` — se o operador já tem rugs confirmados,
+- **Como checar:** `check_token(mint)` → olhar `dev_wallet` e `operator.risk_level`.
+  Em seguida `check_operator(dev_wallet)` — se o operador já tem rugs confirmados,
   o "lançamento exclusivo" é reincidência.
 - **Sinal forte:** `risk_level` CRITICAL/HIGH + flags de concentração
   (`TOP_HOLDER_OWNS_>50%`) ou bundle (`SAME_BLOCK_BUYERS_>10`).

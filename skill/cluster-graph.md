@@ -16,37 +16,43 @@ For a one-address risk check, use `threat-intel.md` instead.
 
 | Step | Endpoint | Purpose |
 |---|---|---|
-| 1 | `GET /v1/clusters?limit=20` | Top active bot clusters |
-| 2 | `GET /v1/cluster/{cluster_id}` | Members + patterns + associated operators |
+| 1 | `GET /v1/clusters?limit=20` | A page of bot clusters (`operators`, `sample_wallets`, `associated_rugs` per entry) |
+| 2 | `GET /v1/cluster/{cluster_id}` | Members (with `role`) + `tags` + `edges` + `associated_tokens` |
 | 3 | `GET /v1/operator/{wallet}/timeline` | What tokens this operator has touched, chronologically |
 | 4 | `check_operator(wallet)` per member | Risk profile per node |
 
-## Cluster shape
+## Cluster shape (`GET /v1/cluster/{cluster_id}`)
 
 ```json
 {
-  "cluster_id": "c_<id>",
+  "cluster_id": "cluster_<id>",
   "size": "<int>",
-  "patterns": ["synchronized_buys", "shared_funding_wallet", "common_deploy_window"],
-  "associated_operators": ["<wallet>", "<wallet>"],
-  "tokens_involved": "<int>",
-  "first_observed": "<unix>",
-  "last_observed": "<unix>",
-  "members": [{ "wallet": "<wallet>", "role": "deployer|buyer|lp_remover|shill" }]
+  "risk_level": "HIGH",
+  "risk_score": "<int>",
+  "tags": ["high_avg_risk"],
+  "first_seen": "<unix>",
+  "last_seen": "<unix>",
+  "shared_funding_source": null,
+  "funding_source_classification": null,
+  "members": [{ "wallet": "<wallet>", "role": "operator|buyer", "first_seen": "<unix>", "tokens_deployed": "<int>", "confirmed_rugs": "<int>" }],
+  "edges": [],
+  "associated_tokens": [{ "mint": "<mint>", "final_outcome": "<outcome>", "predicted_at": "<unix>", "buyers_from_cluster": "<int>" }]
 }
 ```
 
 ## Workflow patterns
 
-**From a token:** `check_token(mint)` → deployer → `check_operator(deployer)` →
-`/operator/{deployer}/timeline` → overlap buyers across their tokens → match to a
-known cluster via `/v1/clusters`.
+**From a token:** `check_token(mint)` → `dev_wallet` → `check_operator(dev_wallet)` →
+`/v1/operator/{dev_wallet}/timeline` → overlap buyers across their tokens → look for
+those wallets in the clusters `/v1/clusters` returns.
 
-**From a wallet:** `check_operator(wallet)` → find its `cluster_id` in `/v1/clusters`
-→ `/v1/cluster/{id}` for the member graph → recursively `check_operator()` the top members.
+**From a wallet:** `check_operator(wallet)` → look for the wallet in the `operators` /
+`sample_wallets` of the clusters `/v1/clusters` returns (the list is a page, not a
+lookup by wallet) → `/v1/cluster/{cluster_id}` for the member graph → recursively
+`check_operator()` the top members.
 
-**From a cluster:** identify by pattern signature in `/v1/clusters` → pull the
-member graph → render as nodes (wallets) + edges (deployer → buyer → lp_remover).
+**From a cluster:** pick one by `tags` / `risk_level` in `/v1/clusters` → pull the
+member graph → render as nodes (wallets, by `role`) + `edges` when the API returns them.
 
 ## Output guidance
 

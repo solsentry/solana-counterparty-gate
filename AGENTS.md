@@ -66,7 +66,7 @@ curl -s https://api.solsentry.app/v1/operator/<deployer_wallet> \
 # Token risk:
 curl -s https://api.solsentry.app/v1/token/<mint>
 
-# Pre-sign transaction preview (authority-grab + address-poisoning detectors):
+# Pre-sign transaction preview (authority-grab detectors):
 curl -s -X POST https://api.solsentry.app/v1/tx-preview \
   -H 'content-type: application/json' -d '{"tx_base64":"<base64-tx>"}'
 ```

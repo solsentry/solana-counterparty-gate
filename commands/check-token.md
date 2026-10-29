@@ -10,14 +10,14 @@ buys, or lists it. Load `skill/threat-intel.md` and `skill/interpreting-scores.m
 1. **Score the mint:**
    ```bash
    curl -s https://api.solsentry.app/v1/token/<mint> \
-     | jq '{risk_level, risk_score, flags, deployer, deployer_risk_level, outcome}'
+     | jq '{risk_level, risk_score, flags, dev_wallet, operator, final_outcome}'
    ```
    (Or MCP: `check_token(mint)`.)
 
 2. **Always pivot to the deployer** — the operator-level signal is the
-   differentiator. If `deployer_risk_level` is `HIGH`/`CRITICAL`, surface it:
+   differentiator. If `operator.risk_level` is `HIGH`/`CRITICAL`, surface it:
    ```bash
-   curl -s https://api.solsentry.app/v1/operator/<deployer> \
+   curl -s https://api.solsentry.app/v1/operator/<dev_wallet> \
      | jq '{risk_level, confirmed_rugs, total_tokens, rug_rate_pct}'
    ```
 
@@ -25,7 +25,7 @@ buys, or lists it. Load `skill/threat-intel.md` and `skill/interpreting-scores.m
    - Lead with the mint's `risk_level`, then the deployer's.
    - Translate `flags` into plain language (see `interpreting-scores.md` / the
      flag glossary): mint authority live, holder concentration, LP not locked, etc.
-   - `outcome: pending` means not yet resolved — say so; don't imply a final call.
+   - `final_outcome: pending` means not yet resolved — say so; don't imply a final call.
 
 ## Rules
 

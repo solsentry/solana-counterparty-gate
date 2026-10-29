@@ -44,12 +44,13 @@ Illustrative values (pull live for the wallet you are checking; counts move as o
 ```json
 {
   "mint": "<mint>",
+  "known": true,
   "risk_level": "HIGH",
   "risk_score": "<int>",
   "flags": ["MINT_AUTHORITY_ENABLED", "TOP_HOLDER_OWNS_>50%"],
-  "deployer": "<wallet>",
-  "deployer_risk_level": "HIGH",
-  "outcome": "pending"
+  "dev_wallet": "<wallet>",
+  "operator": { "wallet": "<wallet>", "risk_level": "HIGH", "risk_label": "<label>", "confirmed_rugs": "<int>" },
+  "final_outcome": "pending"
 }
 ```
 
