@@ -8,24 +8,20 @@ footnote.
 
 | Level | Operator criteria | Token criteria | What you may say |
 |---|---|---|---|
-| `CRITICAL` | 10+ confirmed rugs | token confirmed as rug | "do not compose / do not sign" |
-| `HIGH` | 5+ confirmed rugs / score ≥ 80 | score ≥ 80 | "treat as unsafe; prefer an alternative" |
-| `MEDIUM` | 2+ confirmed rugs / score ≥ 50 | score ≥ 50 | "elevated — surface it, proceed with explicit caution" |
-| `CLEAN` | no rugs, has tracked tokens | — | "no rug signal" (not "guaranteed safe") |
+| `CRITICAL` | 10+ confirmed rugs | score ≥ 80, or token confirmed as rug | "do not compose / do not sign" |
+| `HIGH` | 5+ confirmed rugs | score ≥ 60 | "treat as unsafe; prefer an alternative" |
+| `MEDIUM` | 2+ confirmed rugs | score ≥ 50 | "elevated — surface it, proceed with explicit caution" |
+| `CLEAN` | no rugs, has tracked tokens | — | "no rug signal" (not "safe") |
 | `UNKNOWN` | not in database | not yet scanned | "no history found — absence is not safety" |
 
-### `LOW` — why it is not in the table above
-
-The engine can emit `LOW` for a single isolated weak signal. **Do not headline
-`LOW` as a verdict.** Its precision is a denominator artifact (a large pool of
-barely-flagged tokens, most of which never rug), so quoting it either misleads
-or invites a fair rebuttal. Fold `LOW` into "treat as cautious-`UNKNOWN`" and
-move on. Cite `CRITICAL` / `HIGH` (and `MEDIUM` when needed) — never `LOW`.
+Only the levels in this table are verdicts. Cite `CRITICAL` / `HIGH` (and
+`MEDIUM` when needed); if a response carries any other level, do not headline it
+— fold it into "treat as cautious-`UNKNOWN`".
 
 ## How to state the track record (no percentages)
 
 Do not quote a precision or accuracy percentage — not per tier, not blended.
-Most new Solana launches die regardless of any flag, so a bare hit rate without
+Most new Solana launches die regardless of any flag, so a ratio quoted without
 the base rate of the same universe and window overstates what the signal adds.
 And never claim perfect precision or an error-free record (no detector is
 perfect; claiming it invites disproof). State the track record as a count and point at the audit
@@ -52,19 +48,15 @@ reload-after-CPI, holder/LP inspection) applies regardless of tier.
 - **Serial-deployer boost**: +15 if the deployer has ≥2 confirmed rugs, +25 if
   also classified serial. This is the operator-graph signal flowing into the
   token score — the thing bytecode tools can't see.
-- Score floors: `CRITICAL` ≥ 80, `HIGH` ≥ 60, `MEDIUM` ≥ 40. Low-data tokens
+- Score floors: `CRITICAL` ≥ 80, `HIGH` ≥ 60, `MEDIUM` ≥ 50. Tokens with little data
   (<10 holders) carry a soft risk floor so "too new to tell" doesn't read as clean.
 
-## Operator labels (rug rate = confirmed_rugs / total_tokens)
+## Operator labels (`risk_label`)
 
-| Label | Threshold | Read as |
-|---|---|---|
-| `serial_rugger` | ≥ 70% | almost everything they ship rugs |
-| `suspicious` | ≥ 40% | more rugs than legit |
-| `legit` | < 20% (≥3 tokens) | track record favors legit launches |
-
-Operators with <3 tokens are **unlabelled** — sample too small. Don't infer a
-label the API didn't give you.
+Quote `risk_label` exactly as the API returns it, next to `confirmed_rugs` /
+`total_tokens` (`rug_rate_pct` = confirmed_rugs / total_tokens). Do not derive a
+label from `rug_rate_pct` yourself, and don't infer a label the API didn't give
+you. A wallet with one or two tokens is too small a sample to call serial.
 
 ## Outcome timing (so you qualify "real-time" honestly)
 

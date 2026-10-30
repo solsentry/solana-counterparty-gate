@@ -54,7 +54,7 @@ program IDs are inputs to your system, not part of the audited surface.
   your bytecode; this covers the operators you compose with."
 - A `CLEAN`/`UNKNOWN` counterparty does **not** lower the bar on standard CPI
   hygiene (account ownership, signer checks, reload-after-CPI) — keep those.
-- Do not present this as "now you're 100% safe." It removes one specific blind
+- Do not present this as "now you're safe." It removes one specific blind
   spot (composing with a known-bad operator), nothing more.
 
 ## Why it belongs in the kit

@@ -38,5 +38,5 @@ Load `skill/counterparty.md` and `skill/interpreting-scores.md` for the rules.
 
 - Pull every number live; never reuse a number from any doc.
 - Offer the per-mint audit trail: `/v1/predictions/{mint}`.
-- Never output "safe" for `UNKNOWN`; never headline a `LOW` tier.
+- Never output "safe" for `UNKNOWN`; headline only CRITICAL / HIGH / MEDIUM.
 - One-line verdict first, then the supporting detail.

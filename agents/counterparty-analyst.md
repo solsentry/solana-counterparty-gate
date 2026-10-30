@@ -45,7 +45,7 @@ End with:
 - **Pull every number live** at analysis time; never reuse a number from a doc.
   Cite `/v1/predictions/{mint}` so each verdict is auditable.
 - **`UNKNOWN` ≠ safe** — report it as "not in the tracked operator database".
-- **Never headline a `LOW` tier**; report CRITICAL/HIGH (MEDIUM if needed).
+- **Headline only CRITICAL/HIGH** (MEDIUM if needed); any other level is not load-bearing.
 - **Never claim perfect precision or an error-free record,** and never quote a
   precision or accuracy percentage. State the track record as "over N
   outcome-tracked predictions, each auditable per mint" (N live from `/v1/stats`).

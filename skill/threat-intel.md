@@ -44,25 +44,26 @@ Illustrative values (pull live for the wallet you are checking; counts move as o
 ```json
 {
   "mint": "<mint>",
+  "known": true,
   "risk_level": "HIGH",
   "risk_score": "<int>",
   "flags": ["MINT_AUTHORITY_ENABLED", "TOP_HOLDER_OWNS_>50%"],
-  "deployer": "<wallet>",
-  "deployer_risk_level": "HIGH",
-  "outcome": "pending"
+  "dev_wallet": "<wallet>",
+  "operator": { "wallet": "<wallet>", "risk_level": "HIGH", "risk_label": "<label>", "confirmed_rugs": "<int>" },
+  "final_outcome": "pending"
 }
 ```
 
 ## Output guidance
 
 - **Lead with the verdict**: `CRITICAL` / `HIGH` / `MEDIUM` / `CLEAN` / `UNKNOWN`.
-  Treat `LOW` as not load-bearing (see `interpreting-scores.md`) — fold it into
-  cautious-`UNKNOWN`, don't headline it.
+  Any other level is not load-bearing (see `interpreting-scores.md`) — fold it
+  into cautious-`UNKNOWN`, don't headline it.
 - Always show `confirmed_rugs` **and** `total_tokens` together — `5/5` and
   `5/500` are very different stories.
 - For `UNKNOWN`, say "not in the tracked operator database" — **never** "safe".
 - Offer the per-mint audit trail: `/v1/predictions/{mint}`.
-- Link `https://solsentry.app/operator/{wallet}` for visual verification.
+- For the raw operator record, cite `GET https://api.solsentry.app/v1/operator/{wallet}`.
 
 ## Pitfall
 

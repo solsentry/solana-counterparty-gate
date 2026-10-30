@@ -48,7 +48,7 @@ invoke(&ix, &accounts)?;            // target program_id is third-party
 - Report risk **per tier** (CRITICAL / HIGH / MEDIUM), pulled live. Never quote a
   precision or accuracy percentage, and **never** claim perfect precision or an
   error-free record.
-- `LOW` is a single weak signal — **not load-bearing**. Do not headline it.
+- Headline only CRITICAL / HIGH / MEDIUM; any other level is **not load-bearing**.
 - Operator counts are **volatile**; read them live, never hardcode a count.
 - Cite the per-mint audit trail (`/v1/predictions/{mint}`), never an opaque score.
 
@@ -58,8 +58,9 @@ invoke(&ix, &accounts)?;            // target program_id is third-party
 // ❌ Signing with an address pasted from docs / Discord / DM, unchecked
 const recipient = new PublicKey("Vanity...lookalike");
 
-// ✅ Run tx-preview (POST /v1/tx-preview) — authority-grab + address-poisoning
-//    detectors — before constructing or signing.
+// ✅ Check the pasted address against your contacts
+//    (GET /v1/lookalike-check?destination=<addr>&contacts=<W1>,<W2>), then run
+//    tx-preview (POST /v1/tx-preview, authority-grab detectors) before signing.
 ```
 
 Standard CPI validation (account ownership, signer checks, reload-after-CPI)

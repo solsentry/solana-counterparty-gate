@@ -13,8 +13,8 @@ padrão para o endpoint que ajuda a checá-lo.
 Influencer ou grupo "VIP" anuncia um token novo; compra coordenada no mesmo
 bloco; deployer dropa a liquidez minutos depois.
 
-- **Como checar:** `check_token(mint)` → olhar `deployer` e `deployer_risk_level`.
-  Em seguida `check_operator(deployer)` — se o operador já tem rugs confirmados,
+- **Como checar:** `check_token(mint)` → olhar `dev_wallet` e `operator.risk_level`.
+  Em seguida `check_operator(dev_wallet)` — se o operador já tem rugs confirmados,
   o "lançamento exclusivo" é reincidência.
 - **Sinal forte:** `risk_level` CRITICAL/HIGH + flags de concentração
   (`TOP_HOLDER_OWNS_>50%`) ou bundle (`SAME_BLOCK_BUYERS_>10`).
@@ -50,6 +50,6 @@ padrão `fast_deployer`). O token parece novo; o operador não é.
 
 ## Saída (como responder em PT)
 
-- Lidere com o veredicto (CRITICAL/HIGH/MEDIUM); trate LOW como não-decisivo.
+- Lidere com o veredicto (CRITICAL/HIGH/MEDIUM); qualquer outro nível não é decisivo.
 - Para `UNKNOWN`: "não está na base de operadores rastreados" — **nunca** "é seguro".
-- Ofereça o link de verificação: `https://solsentry.app/operator/{wallet}`.
+- Para o registro bruto do operador, cite `GET https://api.solsentry.app/v1/operator/{wallet}`.

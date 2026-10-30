@@ -53,7 +53,7 @@ Check a token mint:
 
 ```bash
 curl -s https://api.solsentry.app/v1/token/<MINT> \
-  | jq '{risk_level, risk_score, flags, deployer, deployer_risk_level, outcome}'
+  | jq '{risk_level, risk_score, flags, dev_wallet, operator, final_outcome}'
 ```
 
 Audit any single verdict per-mint (the honesty contract — every score is checkable):
@@ -68,11 +68,21 @@ curl -s https://api.solsentry.app/v1/predictions/<MINT> | jq
 |---|---|
 | `GET /v1/stats` | System-wide live metrics (verify cited numbers here) |
 | `GET /v1/operator/{wallet}` | Operator (deployer) risk profile |
+| `GET /v1/operator/{wallet}/timeline` | Cross-launch deploy history (see `operator-history.md`) |
 | `GET /v1/token/{mint}` | Token mint risk profile |
 | `GET /v1/predictions/{mint}` | Per-mint prediction + outcome (auditable) |
-| `GET /v1/lookalike-check?...` | Address-poisoning / vanity lookalike check (see `tx-preview.md`) |
+| `GET /v1/alerts/recent?limit=N` | Most recent flagged mints |
+| `GET /v1/clusters?limit=N` | Bot clusters, one page (see `cluster-graph.md`) |
+| `GET /v1/cluster/{cluster_id}` | One cluster: members, edges, associated tokens |
+| `GET /v1/lookalike-check?destination=<addr>&contacts=<W1>,<W2>` | Address-poisoning / vanity lookalike check (see `tx-preview.md`) |
 | `POST /v1/tx-preview` | Pre-sign risk preview of a transaction (see `tx-preview.md`) |
-| `GET /v1/drain-trace/{wallet}` | Post-incident fund-flow trace (see `forensics.md`; x402-paid) |
+| `GET /v1/drain-trace/{wallet}` | Post-incident fund-flow trace (see `forensics.md`; metered) |
+
+**Metered routes.** Most reads above cost nothing. `GET /v1/pricing` lists the
+per-route credit cost: `/v1/operator/{wallet}/timeline` and `/v1/cluster/{cluster_id}`
+cost credits, and an anonymous caller gets **one** `drain-trace` per UTC day.
+Past the allowance a metered route answers `429` with
+`"error": "credit_quota_exceeded"` and a `retry_after` in seconds.
 
 ## Verify it works
 
